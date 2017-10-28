@@ -1,21 +1,25 @@
-G = {'A': [('B', 7), ('D', 5)],
-     'B': [('A', 7), ('C', 8), ('D', 9), ('E', 7)],
-     'C': [('B', 8), ('E', 5)],
-     'D': [('A', 5), ('B', 9), ('E', 15), ('F', 6)],
-     'E': [('B', 7), ('C', 5), ('D', 15), ('F', 8), ('G', 9)],
-     'F': [('D', 6), ('E', 8), ('G', 11)],
-     'G': [('E', 9), ('F', 11)]}
-
+'''
+I have used Kruskal's algorithm to solve this problem. The basic idea is to sort 
+the edges by their weight and start include them edge without causing
+a cycle. One way to make sure there are no cycle in the graph is by keep track of 
+each vertice in a list of sets. If the new edge will connect two vertices
+within the same set, we will not include it. Else, we include the set and take 
+union of the sets. This algorithm has may parts. First, generate list of edges will 
+take O(E) time. sorting the edges by weight will take O(Elog(E)) 
+time. looping through each edges, find the indices, and merge sets 
+will take worst case O(E*V) time and O(V) space. we have to convert the edges 
+back to the required output graph structure that will take O(E) time and O(V) space. 
+Overall my algorithm will take O(E*V) time and O(E) space.
+'''
 
 def question3(G):
-
-    # make sure G is dictionary
+    # check if G is dictionary
     if type(G) != dict:
         return "Error: G is not dictionary!"
 
-    # make sure G have more than one node
+    # check if G has more than one vertices 
     if len(G) < 2:
-        return "Error: G has not enough vertices to form edges!"
+        return "Error: G lacks enough vertices to form graph"
 
     # get a set of vertices
     vertices = G.keys()
@@ -77,4 +81,24 @@ def question3(G):
             output_graph[i[2]] = [(i[1], i[0])]
     return output_graph
 
-question3(G)
+def test():
+    test_graph1 = {'A': [('B', 7), ('D', 5)],
+     'B': [('A', 7), ('C', 8), ('D', 9), ('E', 7)],
+     'C': [('B', 8), ('E', 5)],
+     'D': [('A', 5), ('B', 9), ('E', 15), ('F', 6)],
+     'E': [('B', 7), ('C', 5), ('D', 15), ('F', 8), ('G', 9)],
+     'F': [('D', 6), ('E', 8), ('G', 11)],
+     'G': [('E', 9), ('F', 11)]}
+
+    print ( "result of test one")
+    question3(test_graph1)
+
+    test_graph2 = []
+    print ( "result of test two")
+    print(question3(test_graph2))
+
+    test_graph3 = {}
+    print ( "result of test three")
+    print(question3(test_graph3))
+
+test()
